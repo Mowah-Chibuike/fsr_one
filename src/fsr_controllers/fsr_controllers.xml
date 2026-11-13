@@ -1,0 +1,8 @@
+<library path="fsr_controllers">
+  <class name="fsr_controllers/DiffDriveArduinoHardware"
+         type="fsr_controllers::DiffDriveArduinoHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+    </description>
+  </class>
+</library>
