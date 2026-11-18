@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fsr_one_robot">
-  <xacro:arg name="prefix" default="" />
-  <xacro:arg name="use_mock" default="True" />
+  <xacro:arg name="use_sim" default="True" />
+
+  <xacro:include filename="$(find fsr_description)/urdf/fsr_one_gazebo.xacro"/>
 
   <xacro:include filename="$(find fsr_description)/urdf/fsr_one_description.urdf.xacro" />
 
@@ -11,9 +12,8 @@
   <!-- Import fsr_one ros2_control description -->
   <xacro:include filename="$(find fsr_controllers)/ros2_control/fsr_one.ros2_control.xacro" />
 
-  <xacro:fsr_one prefix="$(arg prefix)" />
+  <xacro:fsr_one />
 
-  <xacro:fsr_one_ros2_control
-    name="Fsrone" prefix="$(arg prefix)" use_mock="$(arg use_mock)" />
+  <xacro:fsr_one_ros2_control use_sim="$(arg use_sim)" />
 
 </robot>

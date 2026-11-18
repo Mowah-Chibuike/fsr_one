@@ -28,9 +28,9 @@ def generate_launch_description():
         ]
     )
     
-    # rviz_config_file = PathJoinSubstitution(
-    #     [FindPackageShare("diffdrive_arduino"), "rviz", "diffbot.rviz"]
-    # )
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("fsr_description"), "rviz", "display.rviz"]
+    )
 
     control_node = Node(
         package="controller_manager",
@@ -53,7 +53,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        # arguments=["-d", rviz_config_file],
+        arguments=["-d", rviz_config_file],
     )
 
     joint_state_broadcaster_spawner = Node(
