@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fsr_one_robot">
 
   <xacro:macro name="fsr_one_ros2_control" params="use_sim">
 
     <ros2_control name="robot_system" type="system">
       <hardware>
         <xacro:if value="${use_sim}">
-          <plugin>ign_ros2_control/IgnitionSystem</plugin>
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>  
         </xacro:if>
         <xacro:unless value="${use_sim}">
           <plugin>fsr_controllers/DiffDriveArduinoHardware</plugin>
@@ -25,13 +25,19 @@
       </hardware>
 
       <joint name="left_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
 
       <joint name="right_wheel_joint">
-        <command_interface name="velocity"/>
+        <command_interface name="velocity">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>

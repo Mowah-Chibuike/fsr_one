@@ -7,6 +7,8 @@ from ament_index_python.packages import get_package_share_directory
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.substitutions import Command, LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 
 def generate_launch_description():
 
@@ -38,6 +40,8 @@ def generate_launch_description():
         ]
     )
 
+    
+
     gazebo_resource_path = SetEnvironmentVariable(
         name="GZ_SIM_RESOURCE_PATH",
         value=[
@@ -58,19 +62,40 @@ def generate_launch_description():
         package="ros_gz_sim",
         executable="create",
         output="screen",
-        arguments=["-topic", "robot_description", "-name", "fsr_one_robot"]
+        arguments=["-topic", "robot_description", "-name", "fsr_one_robot", "-z", "0.1"]
     )
 
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
             "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
         ],
         remappings=[
             ("/imu", "/imu/out")
-        ]
+        ],
+        output="screen"
     )
+
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        output="screen"
+    )
+
+    diff_drive_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diffbot_base_controller"],
+        output="screen"
+    )
+
+    after_spawn = RegisterEventHandler(
+    OnProcessExit(target_action=gz_spawn_entity, on_exit=[joint_state_broadcaster_spawner]))
+    after_broad = RegisterEventHandler(
+    OnProcessExit(target_action=joint_state_broadcaster_spawner, on_exit=[diff_drive_controller_spawner]))
 
     return LaunchDescription([
         model_arg,
@@ -79,5 +104,7 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         gz_spawn_entity,
-        gz_ros2_bridge
+        gz_ros2_bridge,
+        after_spawn,
+        after_broad
     ])

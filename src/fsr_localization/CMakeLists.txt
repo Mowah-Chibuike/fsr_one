@@ -15,7 +15,7 @@ find_package(sensor_msgs REQUIRED)
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
-  ${PROJECT_NAME}/imu_republisher.py
+  ${PROJECT_NAME}/imu_covariance.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -2,9 +2,9 @@
 
 <robot xmlns="http://www.ros.org/wiki/xacro" name="fsr_one_robot">
 
-    <gazebo reference="wheel_right_link">
-        <mu1>10000000000000.0</mu1>
-        <mu2>10000000000000.0</mu2>
+    <gazebo reference="right_wheel">
+        <mu1>1.00000000000000</mu1>
+        <mu2>1.00000000000000</mu2>
         <kp>1000000000000.0</kp>
         <kd>10.0</kd>
         <minDepth>0.001</minDepth>
@@ -12,9 +12,9 @@
         <fdir1>1 0 0</fdir1>
     </gazebo>
 
-    <gazebo reference="wheel_left_link">
-        <mu1>10000000000000.0</mu1>
-        <mu2>10000000000000.0</mu2>
+    <gazebo reference="left_wheel">
+        <mu1>1.00000000000000</mu1>
+        <mu2>1.00000000000000</mu2>
         <kp>1000000000000.0</kp>
         <kd>10.0</kd>
         <minDepth>0.001</minDepth>
@@ -22,7 +22,7 @@
         <fdir1>1 0 0</fdir1>
     </gazebo>
 
-    <gazebo reference="caster_left_link">
+    <gazebo reference="caster_left_wheel">
         <mu1>0.1</mu1>
         <mu2>0.1</mu2>
         <kp>1000000.0</kp>
@@ -31,7 +31,7 @@
         <maxVel>0.1</maxVel>
     </gazebo>
 
-    <gazebo reference="caster_right_link">
+    <gazebo reference="caster_right_wheel">
         <mu1>0.1</mu1>
         <mu2>0.1</mu2>
         <kp>1000000.0</kp>
@@ -41,7 +41,8 @@
     </gazebo>
 
     <gazebo>
-        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <plugin filename="gz_ros2_control-system"
+            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find fsr_controllers)/config/fsr_controllers.yaml</parameters>
         </plugin>
 
@@ -54,7 +55,7 @@
     <gazebo reference="imu_link">
         <sensor name="imu_sensor" type="imu">
             <always_on>true</always_on>
-            <update_rate>100</update_rate>
+            <update_rate>50</update_rate>
             <gz_frame_id>imu_link</gz_frame_id>
             <topic>imu</topic>
             <imu>
