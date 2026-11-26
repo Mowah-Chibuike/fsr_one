@@ -20,6 +20,9 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
+add_executable(twist_relay src/twist_relay.cpp)
+ament_target_dependencies(twist_relay rclcpp geometry_msgs)
+
 
 ## COMPILE
 add_library(
@@ -56,6 +59,8 @@ install(
   DIRECTORY launch config ros2_control
   DESTINATION share/fsr_controllers
 )
+install(TARGETS )
+
 
 install(TARGETS fsr_controllers
   EXPORT export_fsr_controllers
@@ -63,6 +68,10 @@ install(TARGETS fsr_controllers
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
+install(TARGETS 
+  twist_relay
+  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
